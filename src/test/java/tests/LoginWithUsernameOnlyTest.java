@@ -1,0 +1,31 @@
+package tests;
+
+import core.base.BaseTest;
+import core.pages.LoginPage;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static com.codeborne.selenide.Selenide.open;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+public class LoginWithUsernameOnlyTest extends BaseTest {
+    private static LoginPage loginPage;
+
+    @BeforeEach
+    public void prepare() {
+        open(baseUrl);
+        loginPage = new LoginPage();
+    }
+
+    @Test
+    public void testLoginWithUsernameOnly() {
+        loginPage.loginByUsernameOnly("test_user");
+
+        assertTrue(loginPage.isMissingPasswordMessagePresent());
+
+        String expectedErrorMessage = "Введите пароль";
+        String actualErrorMessage = loginPage.getMissingPasswordErrorMessage();
+        assertEquals(expectedErrorMessage, actualErrorMessage, "Received error message text does not match");
+    }
+}

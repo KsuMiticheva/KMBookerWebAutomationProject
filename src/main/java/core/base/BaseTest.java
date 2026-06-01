@@ -2,10 +2,14 @@ package core.base;
 
 import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import static com.codeborne.selenide.Selenide.closeWebDriver;
@@ -13,14 +17,22 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
 public class BaseTest {
     protected static String baseUrl;
 
-    @BeforeEach
-    protected void setUp() {
+    @BeforeAll
+    protected static void setUp() {
         baseUrl = determineBaseUrl();
         Configuration.browser = "chrome";
         Configuration.browserSize = "1920x1080";
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--lang=ru-RU");
+        Map<String, Object> prefs = new HashMap<>();
+        prefs.put("intl.accept_languages", "ru-RU,ru");
+
+        options.setExperimentalOption("prefs", prefs);
+
+        Configuration.browserCapabilities = options;
     }
 
-    private String determineBaseUrl() {
+    private static String determineBaseUrl() {
         String environment = System.getProperty("env", "test");
         String configFileName = "application-" + environment + ".properties";
 
