@@ -22,10 +22,10 @@ public class LoginWithWrongCredentialsTest extends BaseTest {
     public void loginWithWrongCredentialsTest() {
         loginPage.login("invalidLogin", "invalidPassword");
 
-        assertTrue(loginPage.isErrorMessagePresent(), "Error message had not appeared");
+        assertTrue(loginPage.isInvalidCredentialsMessagePresent(), "Error message had not appeared");
 
-        String expectedErrorMessage = "Неправильно указан логин и/или пароль";
-        String actualErrorMessage = loginPage.getErrorMessageText();
+        String expectedErrorMessage = "Пользователь с таким телефоном, почтой или логином не найден. Проверьте данные и попробуйте снова.";
+        String actualErrorMessage = loginPage.getInvalidCredentialsErrorMessage();
         assertEquals(expectedErrorMessage, actualErrorMessage, "Error message text does not match");
 
     }

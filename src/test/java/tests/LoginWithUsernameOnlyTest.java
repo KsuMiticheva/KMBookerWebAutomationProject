@@ -24,7 +24,7 @@ public class LoginWithUsernameOnlyTest extends BaseTest {
 
         assertTrue(loginPage.isMissingPasswordMessagePresent());
 
-        String expectedErrorMessage = "Введите пароль";
+        String expectedErrorMessage = "Введите телефон, email или логин и пароль.";
         String actualErrorMessage = loginPage.getMissingPasswordErrorMessage();
         assertEquals(expectedErrorMessage, actualErrorMessage, "Received error message text does not match");
     }

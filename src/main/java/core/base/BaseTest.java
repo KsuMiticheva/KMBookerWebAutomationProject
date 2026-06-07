@@ -17,8 +17,8 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
 public class BaseTest {
     protected static String baseUrl;
 
-    @BeforeAll
-    protected static void setUp() {
+    @BeforeEach
+    protected void setUp() {
         baseUrl = determineBaseUrl();
         Configuration.browser = "chrome";
         Configuration.browserSize = "1920x1080";

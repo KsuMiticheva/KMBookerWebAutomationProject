@@ -9,19 +9,23 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$x;
 
 public class LoginPage extends BasePage {
-    private SelenideElement usernameField = $("[name='st.email']");
-    private SelenideElement passwordField = $("[name='st.password']");
-    private SelenideElement loginButton = $("[data-test-id='enter-action']");
-    private SelenideElement loginByQr = $("[label='Войти по QR-коду']");
-    private SelenideElement accessRecovery = $("[aria-label='Не получается войти?']");
-    private SelenideElement registerButton = $x("//button//span[text()='Зарегистрироваться']");
+    private SelenideElement usernameField = $("[data-test-id='login-phone-email']");
+    private SelenideElement passwordField = $("[data-test-id='login-password']");
+    private SelenideElement loginButton = $("[data-test-id='login-submit-btn']");
+    private SelenideElement loginByQr = $("[data-test-id='tab-qr']");
+    private SelenideElement accessRecovery = $("[data-test-id='forgot-password-link']");
+//    This is just to train XPath, better version would be css $("[id='hero-register-btn']")
+    private SelenideElement registerButton = $x("//div[@id='hero-buttons']//button[@id='hero-register-btn']");
+    /* Disabled as social login is not available in the sandbox
     private SelenideElement vkButton = $("[data-l='t,vkc']");
     private SelenideElement mailRuButton = $("[data-l='t,mailru']");
     private SelenideElement yandexButton = $("[data-l='t,yandex']");
+    */
 
-    private SelenideElement errorMessage = $x("//span[contains(text(), 'Неправильно указан логин и/или пароль')]");
-    private SelenideElement missingUsername = $x("//span[contains(text(), 'Введите логин')]");
-    private SelenideElement missingPassword = $x("//span[contains(text(), 'Введите пароль')]");
+//    No specific error message for cases whe no login or password entered; variable disabled
+//    private SelenideElement errorMessage = $("[data-test-id='login-error']");
+    private SelenideElement missingCredentials = $x("//form[@id='loginForm']//div[contains(text(), 'Введите телефон, email или логин и пароль.')]");
+    private SelenideElement invalidCredentials = $x("//form[@id='loginForm']//div[contains(text(), 'Пользователь с таким телефоном, почтой или логином не найден.')]");
 
     {
         verifyPageElements();
@@ -35,39 +39,58 @@ public class LoginPage extends BasePage {
         loginByQr.shouldBe(visible);
         accessRecovery.shouldBe(visible);
         registerButton.shouldBe(visible);
+        /* Disabled as social login is not available yet
         vkButton.shouldBe(visible);
         mailRuButton.shouldBe(visible);
         yandexButton.shouldBe(visible);
+        */
     }
 
-    @Step("Check that login error message appears")
+    @Step("Check that login error message appears on entry with no credentials at all")
     public boolean isErrorMessagePresent() {
-        return errorMessage.shouldBe(visible).exists();
+        return missingCredentials.shouldBe(visible).exists();
     }
 
     @Step("Check that missing username error message appears")
     public boolean isMissingUsernameMessagePresent() {
-        return missingUsername.shouldBe(visible).exists();
+        return missingCredentials.shouldBe(visible).exists();
     }
 
     @Step("Check that missing password error message appears")
     public boolean isMissingPasswordMessagePresent() {
-        return missingPassword.shouldBe(visible).exists();
+        return missingCredentials.shouldBe(visible).exists();
     }
 
-    @Step("Obtain login error text")
+    @Step("Check that invalid credentials error message appears")
+    public boolean isInvalidCredentialsMessagePresent() {
+        return invalidCredentials.shouldBe(visible).exists();
+    }
+
+    @Step("Obtain missing credentials error text")
     public String getErrorMessageText() {
-        return errorMessage.shouldBe(visible).getText();
+        return missingCredentials.shouldBe(visible).getText();
     }
 
     @Step("Obtain missing username error text")
     public String getMissingUsernameErrorMessage() {
-        return missingUsername.shouldBe(visible).getText();
+        return missingCredentials.shouldBe(visible).getText();
     }
 
     @Step("Obtain missing password error text")
     public String getMissingPasswordErrorMessage() {
-        return missingPassword.shouldBe(visible).getText();
+        return missingCredentials.shouldBe(visible).getText();
+    }
+
+    @Step("Obtain invalid credentials error text")
+    public String getInvalidCredentialsErrorMessage() {
+        return invalidCredentials.shouldBe(visible).getText();
+    }
+
+    @Step("Try to login with no credentials entered")
+    public void loginWithNoCredentials() {
+        usernameField.shouldBe(visible);
+        passwordField.shouldBe(visible);
+        loginButton.shouldBe(visible).click();
     }
 
     @Step("Enter the site with login details: {username} and {password}")
@@ -103,27 +126,29 @@ public class LoginPage extends BasePage {
         registerButton.shouldBe(visible).click();
     }
 
+    /* Disabled as VK entry is not available yet
     @Step("Enter using VK")
     public void enterByVK() {
         vkButton.shouldBe(visible).click();
     }
+    */
 
+    /* Disabled as Mail.ru entry is not available yet
     @Step("Enter using Mail.ru")
     public void enterByMailRu() {
         mailRuButton.shouldBe(visible).click();
     }
+    */
 
-    @Step("Enter using Yandex")
+   /* Disabled as Yandex entry is not available yet
+   @Step("Enter using Yandex")
     public void enterByYandex() {
         yandexButton.shouldBe(visible).click();
     }
+    */
 
     @Step("Open entry by QR screen")
     public void enterByQr() {
         loginByQr.shouldBe(visible).click();
     }
-
-
-
-
 }
