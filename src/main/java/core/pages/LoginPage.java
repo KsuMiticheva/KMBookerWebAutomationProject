@@ -27,6 +27,8 @@ public class LoginPage extends BasePage {
     private SelenideElement missingCredentials = $x("//form[@id='loginForm']//div[contains(text(), 'Введите телефон, email или логин и пароль.')]");
     private SelenideElement invalidCredentials = $x("//form[@id='loginForm']//div[contains(text(), 'Пользователь с таким телефоном, почтой или логином не найден.')]");
 
+    private SelenideElement recoveryButton = $("[data-test-id='lockout-recover-btn']");
+
     {
         verifyPageElements();
     }
@@ -116,7 +118,7 @@ public class LoginPage extends BasePage {
         loginButton.shouldBe(visible).click();
     }
 
-    @Step("Open password recovery page")
+    @Step("Forgot password - go to recovery page by link")
     public void openPasswordRecoveryPage() {
         accessRecovery.shouldBe(visible).click();
     }
@@ -150,5 +152,15 @@ public class LoginPage extends BasePage {
     @Step("Open entry by QR screen")
     public void enterByQr() {
         loginByQr.shouldBe(visible).click();
+    }
+
+    @Step("Go to recovery page by button")
+    public void goToRecoveryPage() {
+        recoveryButton.shouldBe(visible).click();
+    }
+
+    @Step("Just click login button")
+    public void clickLogin() {
+        loginButton.shouldBe(visible).click();
     }
 }
