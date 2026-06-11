@@ -16,6 +16,7 @@ public class LoginWithPasswordOnlyTest extends BaseTest {
     public void prepare() {
         open(baseUrl);
         loginPage = new LoginPage();
+        loginPage.acceptCookies();
     }
 
     @Test

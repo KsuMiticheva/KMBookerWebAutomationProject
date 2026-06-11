@@ -16,6 +16,7 @@ public class LoginWithoutCredentialsTest extends BaseTest {
     public void prepare() {
         open(baseUrl);
         loginPage = new LoginPage();
+        loginPage.acceptCookies();
     }
 
     @Test
