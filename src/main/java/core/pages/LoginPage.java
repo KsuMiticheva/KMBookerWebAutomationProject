@@ -175,4 +175,9 @@ public class LoginPage extends BasePage {
     public void clickLogin() {
         loginButton.shouldBe(visible).click();
     }
+
+    @Step("Go to recovery page by link")
+    public void goToRecoveryPageByLink() {
+        accessRecovery.shouldBe(visible).click();
+    }
 }
