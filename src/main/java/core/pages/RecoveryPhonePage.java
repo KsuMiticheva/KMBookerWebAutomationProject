@@ -7,6 +7,7 @@ import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$x;
 
 public class RecoveryPhonePage extends BasePage {
     private SelenideElement phoneEntryField = $("[data-test-id='phone-input']");
@@ -28,6 +29,16 @@ public class RecoveryPhonePage extends BasePage {
     public void setPhoneNumber(String phone) {
         phoneEntryField.setValue(phone);
     }
+
+    @Step("Select country from the list by name: {countryName}")
+    public String selectCountry(String countryName) {
+        countrySelectDropdown.click();
+        SelenideElement countryItem = $x(String.format("//option[text()='%s']", countryName));
+        countryItem.scrollTo();
+        String countryCode = countryItem.attr("value");
+        countryItem.click();
+        return countryCode;
+    };
 
     @Step("Submit phone number")
     public void submitPhoneNumber() {

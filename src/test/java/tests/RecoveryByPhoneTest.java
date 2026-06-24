@@ -8,10 +8,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Selenide.open;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RecoveryByPhoneTest extends BaseTest {
     private static LoginPage loginPage;
     private static RecoveryPage recoveryPage;
+    private static RecoveryPhonePage recoveryPhonePage;
 
     @BeforeEach
     public void prepare() {
@@ -32,6 +34,11 @@ public class RecoveryByPhoneTest extends BaseTest {
         recoveryPage = new RecoveryPage();
 
         recoveryPage.recoveryByPhone();
-        new RecoveryPhonePage();
+        recoveryPhonePage = new RecoveryPhonePage();
+
+        String countryCode = recoveryPhonePage.selectCountry("Греция");
+        assertEquals("+30", countryCode, "Received code does not match");
+
+        recoveryPhonePage.submitPhoneNumber();
     }
 }
