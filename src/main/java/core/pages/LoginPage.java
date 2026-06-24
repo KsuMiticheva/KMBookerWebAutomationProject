@@ -4,6 +4,7 @@ import com.codeborne.selenide.SelenideElement;
 import core.base.BasePage;
 import io.qameta.allure.Step;
 
+import static com.codeborne.selenide.Condition.cssClass;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$x;
@@ -28,6 +29,9 @@ public class LoginPage extends BasePage {
     private SelenideElement invalidCredentials = $x("//form[@id='loginForm']//div[contains(text(), 'Пользователь с таким телефоном, почтой или логином не найден.')]");
 
     private SelenideElement recoveryButton = $("[data-test-id='lockout-recover-btn']");
+
+    private SelenideElement qrPlaceholder = $("[data-test-id='qr-placeholder']");
+    private SelenideElement qrCode = qrPlaceholder.$("svg");
 
     {
         verifyPageElements();
@@ -150,8 +154,16 @@ public class LoginPage extends BasePage {
     */
 
     @Step("Open entry by QR screen")
-    public void enterByQr() {
+    public LoginPage switchToQr() {
         loginByQr.shouldBe(visible).click();
+        return this;
+    }
+
+    @Step("Assess QR tab for elements")
+    public void assessQrTab() {
+        qrPlaceholder.shouldBe(visible);
+        loginByQr.shouldHave(cssClass("active"));
+        qrCode.shouldBe(visible);
     }
 
     @Step("Go to recovery page by button")
